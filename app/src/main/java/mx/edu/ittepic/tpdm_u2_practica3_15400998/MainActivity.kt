@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
-import androidx.appcompat.app.AlertDialog
+import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.OutputStreamWriter
 import kotlin.random.Random
@@ -37,6 +37,7 @@ class MainActivity : AppCompatActivity() {
     class Generar(i: String, f: String, context: Context) : AsyncTask<Void, Void, List<Int>>() {
         var i = i.toInt()
         var f = f.toInt()
+        var con = context
 
         override fun doInBackground(vararg p0: Void?): List<Int> {
             val num = List(2000) {
@@ -49,6 +50,7 @@ class MainActivity : AppCompatActivity() {
             super.onPostExecute(result)
             var conteo = 0
             var et = ""
+            var np = "Resultado de los numeros primos generados en el rango dado: "
             (0..1999).forEach {
                 conteo = 0
                 et = result?.get(it).toString()
@@ -57,17 +59,19 @@ class MainActivity : AppCompatActivity() {
                         conteo++
                     }
                 }
+                if (conteo <= 2 && et.toInt()>1) {
+                    np=np+et+", "
+                }
             }
+            guardarTXT(np)
+        }
+        fun guardarTXT(numerosPrimos:String){
+            val guardarArchivo = OutputStreamWriter(con.openFileOutput("primos.txt", Activity.MODE_PRIVATE))
+            guardarArchivo.write(numerosPrimos)
+            guardarArchivo.flush()
+            guardarArchivo.close()
+            Toast.makeText(con,"Números primos guardados!",Toast.LENGTH_SHORT).show()
         }
     }
-    /*fun guardar(dato: Int){
-        val guardarArchivo = OutputStreamWriter(openFileOutput("datos.txt", Activity.MODE_PRIVATE))
-        guardarArchivo.write(conteo.toString())
-        guardarArchivo.flush()
-        guardarArchivo.close()
 
-        val alerta = AlertDialog.Builder(this)
-        alerta.setTitle("Atención").setMessage("Se guardo en archivo").setPositiveButton("Aceptar"){dialogInterface, i ->
-        }.show()
-    }*/
 }
