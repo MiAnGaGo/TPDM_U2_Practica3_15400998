@@ -65,9 +65,9 @@ class MainActivity : AppCompatActivity() {
             }
             guardarTXT(np)
         }
-        fun guardarTXT(numerosPrimos:String){
+        fun guardarTXT(NP: String){
             val guardarArchivo = OutputStreamWriter(con.openFileOutput("primos.txt", Activity.MODE_PRIVATE))
-            guardarArchivo.write(numerosPrimos)
+            guardarArchivo.write(NP)
             guardarArchivo.flush()
             guardarArchivo.close()
             Toast.makeText(con,"Números primos guardados!",Toast.LENGTH_SHORT).show()
